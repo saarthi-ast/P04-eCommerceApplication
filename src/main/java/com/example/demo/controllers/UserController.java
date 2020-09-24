@@ -63,7 +63,7 @@ public class UserController {
 		byte[] salt = new byte[16];
 		secureRandom.nextBytes(salt);
 		String encodedSalt = Base64.getEncoder().encodeToString(salt);
-		user.setPassword(bCryptPasswordEncoder.encode(password)+encodedSalt);
+		user.setPassword(bCryptPasswordEncoder.encode(password));
 		user.setSalt(encodedSalt);
 
 		Cart cart = new Cart();

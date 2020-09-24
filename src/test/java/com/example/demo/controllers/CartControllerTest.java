@@ -14,7 +14,9 @@ import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -50,7 +52,9 @@ public class CartControllerTest {
 
         Cart cart = new Cart();
         cart.setId(0l);
-        cart.setItems(Arrays.asList(item));
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+        cart.setItems(items);
 
         User user = new User();
         user.setUsername("test");
@@ -59,7 +63,7 @@ public class CartControllerTest {
         user.setCart(cart);
 
         when(userRepository.findByUsername("test")).thenReturn(user);
-        when(itemRepository.findById(anyLong())).thenReturn(Optional.ofNullable(item));
+        when(itemRepository.findById(1l)).thenReturn(Optional.ofNullable(item));
         when(cartRepository.save(any())).thenReturn(cart);
     }
 
@@ -69,5 +73,46 @@ public class CartControllerTest {
         assertNotNull(response);
         assertEquals(200,response.getStatusCode().value());
         assertEquals("testItem",response.getBody().getItems().get(0).getName());
+    }
+
+    @Test
+    public void testRemoveFromCart(){
+        final ResponseEntity<Cart> response = cartController.removeFromcart(request);
+        assertNotNull(response);
+        assertEquals(200,response.getStatusCode().value());
+        assertEquals(0,response.getBody().getItems().size());
+    }
+
+    @Test
+    public void testAddCartFailureUserMissing(){
+        request.setUsername("badUser");
+        final ResponseEntity<Cart> response = cartController.addTocart(request);
+        assertNotNull(response);
+        assertEquals(404,response.getStatusCode().value());
+    }
+
+    @Test
+    public void testAddCartFailureItemUserMissing(){
+        request.setItemId(-5l);
+        final ResponseEntity<Cart> response = cartController.addTocart(request);
+        assertNotNull(response);
+        assertEquals(404,response.getStatusCode().value());
+    }
+
+
+    @Test
+    public void testRemoveFromCartFailureUserMissing(){
+        request.setUsername("badUser");
+        final ResponseEntity<Cart> response = cartController.addTocart(request);
+        assertNotNull(response);
+        assertEquals(404,response.getStatusCode().value());
+    }
+
+    @Test
+    public void testRemoveFromCartFailureItemUserMissing(){
+        request.setItemId(-5l);
+        final ResponseEntity<Cart> response = cartController.removeFromcart(request);
+        assertNotNull(response);
+        assertEquals(404,response.getStatusCode().value());
     }
 }
