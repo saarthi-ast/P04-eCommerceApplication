@@ -1,44 +1,43 @@
 package com.example.demo.model.persistence;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "user")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty
-	private long id;
-	
-	@Column(nullable = false, unique = true)
-	@JsonProperty
-	private String username;
-	
-	@OneToOne(cascade = CascadeType.ALL)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty
+    private long id;
+
+    @Column(nullable = false, unique = true)
+    @JsonProperty
+    private String username;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
-	@JsonIgnore
+    @JsonIgnore
     private Cart cart;
 
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@Column(nullable = false)
-	private String password;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
+    private String password;
 
-	@JsonIgnore
-	@Column(nullable = false)
-	private String salt;
+    @JsonIgnore
+    @Column(nullable = false)
+    private String salt;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

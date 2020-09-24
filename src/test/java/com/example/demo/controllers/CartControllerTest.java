@@ -7,7 +7,6 @@ import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.ItemRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
-import com.example.demo.model.requests.CreateUserRequest;
 import com.example.demo.model.requests.ModifyCartRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +14,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,9 +33,9 @@ public class CartControllerTest {
     @Before
     public void setUp() {
         cartController = new CartController();
-        TestUtils.injectObjects(cartController,"userRepository", userRepository);
-        TestUtils.injectObjects(cartController,"cartRepository", cartRepository);
-        TestUtils.injectObjects(cartController,"itemRepository", itemRepository);
+        TestUtils.injectObjects(cartController, "userRepository", userRepository);
+        TestUtils.injectObjects(cartController, "cartRepository", cartRepository);
+        TestUtils.injectObjects(cartController, "itemRepository", itemRepository);
 
         request = new ModifyCartRequest();
         request.setItemId(1l);
@@ -68,51 +66,51 @@ public class CartControllerTest {
     }
 
     @Test
-    public void testAddCart(){
+    public void testAddCart() {
         final ResponseEntity<Cart> response = cartController.addTocart(request);
         assertNotNull(response);
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals("testItem",response.getBody().getItems().get(0).getName());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals("testItem", response.getBody().getItems().get(0).getName());
     }
 
     @Test
-    public void testRemoveFromCart(){
+    public void testRemoveFromCart() {
         final ResponseEntity<Cart> response = cartController.removeFromcart(request);
         assertNotNull(response);
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals(0,response.getBody().getItems().size());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(0, response.getBody().getItems().size());
     }
 
     @Test
-    public void testAddCartFailureUserMissing(){
+    public void testAddCartFailureUserMissing() {
         request.setUsername("badUser");
         final ResponseEntity<Cart> response = cartController.addTocart(request);
         assertNotNull(response);
-        assertEquals(404,response.getStatusCode().value());
+        assertEquals(404, response.getStatusCode().value());
     }
 
     @Test
-    public void testAddCartFailureItemUserMissing(){
+    public void testAddCartFailureItemUserMissing() {
         request.setItemId(-5l);
         final ResponseEntity<Cart> response = cartController.addTocart(request);
         assertNotNull(response);
-        assertEquals(404,response.getStatusCode().value());
+        assertEquals(404, response.getStatusCode().value());
     }
 
 
     @Test
-    public void testRemoveFromCartFailureUserMissing(){
+    public void testRemoveFromCartFailureUserMissing() {
         request.setUsername("badUser");
         final ResponseEntity<Cart> response = cartController.addTocart(request);
         assertNotNull(response);
-        assertEquals(404,response.getStatusCode().value());
+        assertEquals(404, response.getStatusCode().value());
     }
 
     @Test
-    public void testRemoveFromCartFailureItemUserMissing(){
+    public void testRemoveFromCartFailureItemUserMissing() {
         request.setItemId(-5l);
         final ResponseEntity<Cart> response = cartController.removeFromcart(request);
         assertNotNull(response);
-        assertEquals(404,response.getStatusCode().value());
+        assertEquals(404, response.getStatusCode().value());
     }
 }

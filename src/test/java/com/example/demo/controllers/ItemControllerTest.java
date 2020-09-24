@@ -1,13 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.TestUtils;
-import com.example.demo.model.persistence.Cart;
 import com.example.demo.model.persistence.Item;
-import com.example.demo.model.persistence.User;
-import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.ItemRepository;
-import com.example.demo.model.persistence.repositories.UserRepository;
-import com.example.demo.model.requests.CreateUserRequest;
 import com.example.demo.model.requests.ModifyCartRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +10,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +26,7 @@ public class ItemControllerTest {
     @Before
     public void setUp() {
         itemController = new ItemController();
-        TestUtils.injectObjects(itemController,"itemRepository", itemRepository);
+        TestUtils.injectObjects(itemController, "itemRepository", itemRepository);
 
         Item item = new Item();
         item.setDescription("testItemDesc");
@@ -56,28 +49,28 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testfindItemById(){
+    public void testfindItemById() {
         ResponseEntity<Item> response = itemController.getItemById(1l);
         assertNotNull(response);
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals("testItem",response.getBody().getName());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals("testItem", response.getBody().getName());
     }
 
     @Test
-    public void testfindItemByName(){
+    public void testfindItemByName() {
         ResponseEntity<List<Item>> response = itemController.getItemsByName("testItem");
         assertNotNull(response);
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals("testItem",response.getBody().get(0).getName());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals("testItem", response.getBody().get(0).getName());
     }
 
     @Test
-    public void testfindAllItems(){
+    public void testfindAllItems() {
         ResponseEntity<List<Item>> response = itemController.getItems();
         assertNotNull(response);
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals(2,response.getBody().size());
-        assertEquals("testItem",response.getBody().get(0).getName());
-        assertEquals("testItem2",response.getBody().get(1).getName());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(2, response.getBody().size());
+        assertEquals("testItem", response.getBody().get(0).getName());
+        assertEquals("testItem2", response.getBody().get(1).getName());
     }
 }

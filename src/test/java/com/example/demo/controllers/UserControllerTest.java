@@ -7,7 +7,6 @@ import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.CreateUserRequest;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -38,9 +37,9 @@ public class UserControllerTest {
     @Before
     public void setUp() {
         userController = new UserController();
-        TestUtils.injectObjects(userController,"userRepository", userRepository);
-        TestUtils.injectObjects(userController,"cartRepository", cartRepository);
-        TestUtils.injectObjects(userController,"bCryptPasswordEncoder", encoder);
+        TestUtils.injectObjects(userController, "userRepository", userRepository);
+        TestUtils.injectObjects(userController, "cartRepository", cartRepository);
+        TestUtils.injectObjects(userController, "bCryptPasswordEncoder", encoder);
 
         createUserRequest = new CreateUserRequest();
         username = "test" + System.currentTimeMillis();
@@ -127,7 +126,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void createUserErrorPasswordLengthLessThanSeven() throws Exception {
+    public void createUserErrorPasswordLengthLessThanEight() throws Exception {
         CreateUserRequest createUserRequest = new CreateUserRequest();
         String username = "test" + System.currentTimeMillis();
         createUserRequest.setUsername(username);
